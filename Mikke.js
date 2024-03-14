@@ -15,7 +15,7 @@ function addTaskButton() {
     if (typeof motivation != "number" || motivation < -1 || motivation > 100) {
         motivation = 50;
     }
-    addTask(jobName, jobId, motivation, danger false);
+    addTask(jobName, jobId, motivation, danger, false);
 }
 
 // Modify the addTask function to accept the danger parameter
