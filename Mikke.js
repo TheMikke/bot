@@ -1,4 +1,5 @@
 var tasks = [];
+var taskList = [];
 var currentTaskId = 0;
 var audio;
 window.onload = function () {
@@ -6,7 +7,6 @@ window.onload = function () {
    randomClick()
 };
 
-var taskList = [];
 
 function addTaskButton() {
    var c = document.getElementById("job").selectedOptions[0].text;
