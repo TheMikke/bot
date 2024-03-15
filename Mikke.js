@@ -256,24 +256,24 @@ function tmStartWork() {
 }
 
 function addAutoTasks(a) {
-	gameWin.Ajax.remoteCallMode("work", "index", {}, function(c) {
-		gameWin.JobsModel.initJobs(c.jobs);
-		gameWin.JobsModel.sortJobs(a, null, "desc");
-		tasks = [];
-		for (var b = 0; b < gameWin.JobsModel.Jobs.length; b++) {
-			var job = gameWin.JobsModel.Jobs[b];
-			var myCondition = job.danger <= 20;
-			if (job.isVisible && myCondition) {
-				var d = parseInt(gameWin.JobsModel.Jobs[b].jobmotivation * 100 - 50);
-				if (d < 0) {
-					d = 0
-				}
-				addTask(gameWin.JobsModel.Jobs[b].name, gameWin.JobsModel.Jobs[b].id, d, true);
-				break
-			}
-		}
-	}, null)
-}
+        gameWin.Ajax.remoteCallMode("work", "index", {}, function(c) {
+            gameWin.JobsModel.initJobs(c.jobs);
+            gameWin.JobsModel.sortJobs(a, null, "desc");
+            tasks = [];
+            for (var b = 0; b < gameWin.JobsModel.Jobs.length; b++) {
+                var job = gameWin.JobsModel.Jobs[b];
+                var myCondition = (job.jobpoints / job.workpoints) > 1.3;
+                if (job.isVisible && myCondition) {
+                    var d = parseInt(gameWin.JobsModel.Jobs[b].jobmotivation * 100 - 50);
+                    if (d < 0) {
+                        d = 0
+                    }
+                    addTask(gameWin.JobsModel.Jobs[b].name, gameWin.JobsModel.Jobs[b].id, d, true);
+                    break
+                }
+            }
+        }, null)
+    }
 
 function tmGetWorkTime() {
 	if (gameWin.Character.energy >= 2) {
