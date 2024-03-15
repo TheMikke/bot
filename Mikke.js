@@ -1,5 +1,4 @@
 var tasks = [];
-var taskList = [];
 var currentTaskId = 0;
 var audio;
 window.onload = function () {
@@ -20,10 +19,12 @@ function addTaskButton() {
 }
 
 function saveTaskList() {
+   var taskList = [];
    var taskListJSON = JSON.stringify(taskList);
    localStorage.setItem('taskList', taskListJSON);
 
-function loadTaskList() {
+function loadTaskList() {   
+   var taskList = [];
    var taskListJSON = localStorage.getItem('taskList');
    taskList = JSON.parse(taskListJSON);
        
