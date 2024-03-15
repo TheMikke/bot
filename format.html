@@ -1,0 +1,45 @@
+<div>
+    <p style="display:inline-block; margin:0;">Aktualizovat stránku:</p>
+    <input type="checkbox" id="refreshGame" onchange="gcSetRefreshGameTimer()" />
+</div>
+<div>
+    <p style="display:inline-block; margin:0;">AutoBot:</p>
+    <input type="checkbox" id="autoTask" onchange="delAutoTasks();tmReset();tmStartWork();" />
+    <p style="display:inline-block; margin:0; margin-left:5px">Priorita:</p>
+    <select id="direct" style="width:108px" onchange="delAutoTasks();tmReset();">
+        <option value="experience">xp</option>
+        <option value="money">$$$</option>
+    </select>
+</div>
+<div>
+    <p style="display:inline-block; margin:0;">Město:</p>
+    <input style="width:90px;margin-left:5px" id="town" value="city"></input>
+    <p style="display:inline-block; margin:0; margin-left:4px">Room:</p>
+    <select style="width:110px" id="room">
+        <option value="cubby">Komora</option>
+        <option value="bedroom">Noclehárna</option>
+        <option value="hotel_room">Hotelový pokoj</option>
+        <option value="apartment">Apartmán</option>
+        <option value="luxurious_apartment" selected>Luxusní apartmán</option>
+    </select>
+</div>
+<div>
+    <table id="tasksList" style="width:300px;border-collapse: collapse;table-layout:fixed;">
+        <tr style="background: rgb(165, 165, 165);">
+            <td style="width:150px;text-align: center;font-weight: bold;">Práce</td>
+            <td style="width:78px; padding-left:5px;text-align: center;font-weight: bold; border-left:solid 1px;border-right:solid 1px;">Motivace</td>
+            <td style="padding-left:5px;"></td>
+        </tr>
+        <tr id="elementsForAdding">
+            <td style="">
+                <select style="width:100%" id="job"></select>
+            </td>
+            <td style="padding-left:5px">
+                <input style="width:100%" id="motivation" value="75"></input>
+            </td>
+            <td style="padding-left:5px;text-align:center;">
+                <button onclick="addTaskButton(); tmStartWork();">OK</button>
+            </td>
+        </tr>
+    </table>
+</div>
