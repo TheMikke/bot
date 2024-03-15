@@ -6,6 +6,8 @@ window.onload = function () {
    randomClick()
 };
 
+var taskList = [];
+
 function addTaskButton() {
    var c = document.getElementById("job").selectedOptions[0].text;
    var a = document.getElementById("job").value;
@@ -14,8 +16,17 @@ function addTaskButton() {
       b = 50
    }
    addTask(c, a, b, false)
+   saveTaskList();
 }
 
+function saveTaskList() {
+   var taskListJSON = JSON.stringify(taskList);
+   localStorage.setItem('taskList', taskListJSON);
+
+function loadTaskList() {
+   var taskListJSON = localStorage.getItem('taskList');
+   taskList = JSON.parse(taskListJSON);
+       
 function addTask(g, f, i, b) {
    currentTaskId++;
    var h = document.createElement("tr");
