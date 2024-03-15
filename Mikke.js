@@ -6,20 +6,6 @@ window.onload = function() {
 	randomClick()
 };
 
-function toggleAutoTask() {
-        var btn = document.getElementById("autoTask");
-        if (btn.innerText === "Off") {
-            btn.innerText = "On";
-            delAutoTasks();
-            tmReset();
-            tmStartWork();
-        } else {
-            btn.innerText = "Off";
-            delAutoTasks();
-            tmReset();
-        }
-    }
-
 function addTaskButton() {
 	var c = document.getElementById("job").selectedOptions[0].text;
 	var a = document.getElementById("job").value;
@@ -276,7 +262,7 @@ function addAutoTasks(a) {
             tasks = [];
             for (var b = 0; b < gameWin.JobsModel.Jobs.length; b++) {
                 var job = gameWin.JobsModel.Jobs[b];
-                var myCondition = (job.jobpoints / job.workpoints) > 1.3;
+                var myCondition = (job.jobpoints / job.workpoints) > 1.25;
                 if (job.isVisible && myCondition) {
                     var d = parseInt(gameWin.JobsModel.Jobs[b].jobmotivation * 100 - 50);
                     if (d < 0) {
