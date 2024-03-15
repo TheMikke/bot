@@ -2,6 +2,7 @@
     <p style="display:inline-block; margin:0;">Aktualizovat stránku:</p>
     <input type="checkbox" id="refreshGame" onchange="gcSetRefreshGameTimer()" />
 </div>
+
 <div>
     <p style="display:inline-block; margin:0;">AutoBot:</p>
     <input type="checkbox" id="autoTask" onchange="delAutoTasks();tmReset();tmStartWork();" />
@@ -11,32 +12,26 @@
         <option value="money">$$$</option>
     </select>
 </div>
+
 <div>
-    <table id="tasksList" style="width:300px;border-collapse: collapse;table-layout:fixed;">
-        <tr style="background: rgb(165, 165, 165);">
-            <td style="width:150px;text-align: center;font-weight: bold;">Práce</td>
-            <td style="width:78px; padding-left:5px;text-align: center;font-weight: bold; border-left:solid 1px;border-right:solid 1px;">Motivace</td>
-            <td style="padding-left:5px;"></td>
-        </tr>
-        <tr id="elementsForAdding">
-            <td style="">
-                <select style="width:100%" id="job"></select>
-            </td>
-            <td style="padding-left:5px">
-                <input style="width:100%" id="motivation" value="50"></input>
-            </td>
-            <td style="padding-left:5px;text-align:center;">
-                <button onclick="addTaskButton();">Přidat job</button>
-            </td>
-            <td style="padding-left:5px;text-align:center;">
-                <button onclick="tmStartWork();">Start</button>
-            </td>
-            <td style="padding-left:5px;text-align:center;">
-                <button onclick="saveTaskList()">Save List</button>
-            </td>
-            <td style="padding-left:5px;text-align:center;">
-                <button onclick="loadTaskList()">Load List</button>
-            </td>
-        </tr>
-    </table>
+    <table id="tasksList" style="width: 100%; border-collapse: collapse;">
+    <tr style="background: rgb(165, 165, 165);">
+      <td style="width: 40%; text-align: center; font-weight: bold; padding: 10px;">Práce</td>
+      <td style="width: 30%; text-align: center; font-weight: bold; border-left: solid 1px; border-right: solid 1px; padding: 10px;">Motivace</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;">
+        <select style="width: 100%; padding: 5px;" id="job"></select>
+      </td>
+      <td style="padding: 10px;">
+        <input style="width: 100%; padding: 5px;" id="motivation" value="50"></input>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="text-align: center; padding: 10px;">
+        <button style="padding: 5px 15px;" onclick="addTaskButton();">Přidat job</button>
+        <button style="padding: 5px 15px;" onclick="tmStartWork();">Start</button>
+      </td>
+    </tr>
+  </table>
 </div>
