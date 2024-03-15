@@ -272,7 +272,7 @@ function addAutoTasks(a) {
       gameWin.JobsModel.sortJobs(a, null, "desc");
       tasks = [];
       for (var b = 0; b < gameWin.JobsModel.Jobs.length; b++) {
-         if (gameWin.JobsModel.Jobs[b].jobObj.level) {
+         if (gameWin.JobsModel.Jobs[b].jobObj.level && gameWin.JobsModel.Jobs[b].job.danger <= 20) {
             var d = parseInt(gameWin.JobsModel.Jobs[b].jobmotivation * 100 - 25);
             if (d < 0) {
                d = 0
