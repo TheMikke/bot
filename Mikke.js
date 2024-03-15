@@ -6,6 +6,20 @@ window.onload = function() {
 	randomClick()
 };
 
+function toggleAutoTask() {
+        var btn = document.getElementById("autoTask");
+        if (btn.innerText === "Off") {
+            btn.innerText = "On";
+            delAutoTasks();
+            tmReset();
+            tmStartWork();
+        } else {
+            btn.innerText = "Off";
+            delAutoTasks();
+            tmReset();
+        }
+    }
+
 function addTaskButton() {
 	var c = document.getElementById("job").selectedOptions[0].text;
 	var a = document.getElementById("job").value;
