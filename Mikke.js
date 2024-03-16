@@ -27,17 +27,19 @@ function addTask(g, f, i, b) {
 		isAutoTask: b
 	});
 	h.onmouseover = function() {
-		this.style.background = "rgb(223, 223, 223)"
+		this.style.background = "rgb(255, 246, 228)"
 	};
 	h.onmouseout = function() {
 		this.style.background = "rgb(255, 255, 255)"
 	};
 	var e = document.createElement("td");
 	e.innerText = g;
+	e.style.paddingLeft = "5px";
 	var d = document.createElement("td");
 	d.innerText = i;
 	d.style.paddingLeft = "5px";
 	d.style.textAlign = "center";
+	d.style.borderLeft = "1px solid black";
 	var c = document.createElement("td");
 	c.style.paddingLeft = "5px";
 	c.style.textAlign = "center";
@@ -102,7 +104,7 @@ function gcFillJobDropdown() {
 function gcStartJob(b, a) {
 	gameWin.Ajax.get("map", "get_minimap", {}, function(g) {
 		if (g.error) {
-			console.error("трохи упав gcStartJob: " + g.msg);
+			console.error("Dropping gcStartJob: " + g.msg);
 			return
 		}
 		var d = g.job_groups[gameWin.JobList.getJobById(b).groupid];
@@ -128,51 +130,6 @@ function gcStartJob(b, a) {
 		var h = new gameWin.Array();
 		h.push(new gameWin.TaskJob(b, c, j, a));
 		gameWin.TaskQueue.add(h)
-	}, null)
-}
-
-function gcGoSleep(b, a) {
-	if (b == "") {
-		return
-	}
-	gameWin.Ajax.get("map", "get_minimap", {}, function(c) {
-		if (c.error) {
-			console.error("трохи упав gcGoSleep: " + c.msg);
-			return
-		}
-		for (var d in c.towns) {
-			if (c.towns[d].name == b) {
-				gameWin.HotelWindow.townid = d;
-				gameWin.HotelWindow.start(a);
-				break
-			}
-		}
-	}, null)
-}
-
-function gcPutMoneyToBank() {
-	gameWin.Ajax.get("map", "get_minimap", {}, function(a) {
-		if (a.error) {
-			console.error("трохи упав 1 gcPutMoneyToBank: " + a.msg);
-			return
-		}
-		for (var b in a.towns) {
-			if (a.towns[b].x == gameWin.Character.position.x && a.towns[b].y == gameWin.Character.position.y) {
-				gameWin.Ajax.remoteCall("building_bank", "deposit", {
-					town_id: b,
-					amount: gameWin.Character.money
-				}, function(c) {
-					if (c.error == false) {
-						gameWin.BankWindow.Balance.Mupdate(c);
-						gameWin.Character.setDeposit(c.deposit);
-						gameWin.Character.setMoney(c.own_money)
-					} else {
-						console.error("трохи упав 2 gcPutMoneyToBank: " + c.msg)
-					}
-				}, null);
-				break
-			}
-		}
 	}, null)
 }
 
@@ -205,54 +162,38 @@ function tmReset() {
 }
 
 function tmStartWork() {
-	if (timerChekingEmploy === undefined) {
-		timerChekingEmploy = setInterval(function() {
-			console.log("check");
-			if (gameWin.TaskQueue.queue.length < 1) {
-				if (currentTask) {
-					if (gameWin.Character.energy >= 2) {
-						gameWin.Ajax.remoteCallMode("work", "index", {}, function(b) {
-							gameWin.JobsModel.initJobs(b.jobs);
-							if (gameWin.JobsModel.getById(currentTask.jobId).jobmotivation * 100 > currentTask.motivation || currentTask.motivation == -1) {
-								console.log("старт " + gameWin.JobsModel.getById(currentTask.jobId).name + " " + new Date().getHours() + ":" + new Date().getMinutes());
-								gcStartJob(currentTask.jobId, tmGetWorkTime())
-							} else {
-								delTask(currentTask.taskId);
-								tmReset()
-							}
-						}, null)
-					} else {
-						var a = document.getElementById("town").value;
-						if (a != "") {
-							console.log("іду спать в " + a + ". " + new Date().getHours() + ":" + new Date().getMinutes());
-							gcGoSleep(a, document.getElementById("room").value)
-						}
-					}
-				} else {
-					if (tasks.length > 0) {
-						currentTask = tasks[0]
-					} else {
-						if (document.getElementById("autoTask").checked) {
-							addAutoTasks(document.getElementById("direct").value)
-						} else {
-							clearInterval(timerChekingEmploy);
-							timerChekingEmploy = undefined
-						}
-					}
-				}
-			} else {
-				if (gameWin.TaskQueue.queue[0].type == "sleep") {
-					if (gameWin.Character.money > 1 && gameWin.TaskQueue.queue[0].data.x == gameWin.Character.position.x && gameWin.TaskQueue.queue[0].data.y == gameWin.Character.position.y) {
-						console.log("кладу гроші в банк. " + new Date().getHours() + ":" + new Date().getMinutes());
-						gcPutMoneyToBank()
-					}
-					if (gameWin.Character.energy == gameWin.Character.maxEnergy) {
-						gcCancelAllJobs()
-					}
-				}
-			}
-		}, 3000)
-	}
+    if (timerChekingEmploy === undefined) {
+        timerChekingEmploy = setInterval(function() {
+            console.log("check");
+            if (gameWin.TaskQueue.queue.length < 1) {
+                if (currentTask) {
+                    if (gameWin.Character.energy >= 2) {
+                        gameWin.Ajax.remoteCallMode("work", "index", {}, function(b) {
+                            gameWin.JobsModel.initJobs(b.jobs);
+                            if (gameWin.JobsModel.getById(currentTask.jobId).jobmotivation * 100 > currentTask.motivation || currentTask.motivation == -1) {
+                                console.log("Start " + gameWin.JobsModel.getById(currentTask.jobId).name + " " + new Date().getHours() + ":" + new Date().getMinutes());
+                                gcStartJob(currentTask.jobId, tmGetWorkTime())
+                            } else {
+                                delTask(currentTask.taskId);
+                                tmReset()
+                            }
+                        }, null)
+                    }
+                } else {
+                    if (tasks.length > 0) {
+                        currentTask = tasks[0]
+                    } else {
+                        if (document.getElementById("autoTask").checked) {
+                            addAutoTasks(document.getElementById("direct").value)
+                        } else {
+                            clearInterval(timerChekingEmploy);
+                            timerChekingEmploy = undefined
+                        }
+                    }
+                }
+            }
+        }, 3000)
+    }
 }
 
 function addAutoTasks(a) {
@@ -262,12 +203,9 @@ function addAutoTasks(a) {
             tasks = [];
             for (var b = 0; b < gameWin.JobsModel.Jobs.length; b++) {
                 var job = gameWin.JobsModel.Jobs[b];
-                var myCondition = (job.jobpoints / job.workpoints) > 1.25;
+                var myCondition = (job.jobpoints / job.workpoints) > 1.3;
                 if (job.isVisible && myCondition) {
-                    var d = parseInt(gameWin.JobsModel.Jobs[b].jobmotivation * 100 - 50);
-                    if (d < 0) {
-                        d = 0
-                    }
+                    var d = 50;
                     addTask(gameWin.JobsModel.Jobs[b].name, gameWin.JobsModel.Jobs[b].id, d, true);
                     break
                 }
