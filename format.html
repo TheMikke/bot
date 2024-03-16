@@ -1,22 +1,21 @@
 <div style="text-align: center;">
-    <div>
+    <div style="width: 300px; margin: 0 auto; background-color: rgb(255, 246, 228); padding: 10px;">
         <h1 style="margin: 10px;">MikkeBot</h1>
-	</div>
-	<div style="margin: 10px auto;">
-	<input type="checkbox" id="autoTask" onchange="delAutoTasks();tmReset();tmStartWork();"><span style="padding:5px;font-size: 20px; color: rgb(133, 0, 120);">Use Auto-Task</span></input></input>
-	</div>
-	<div>
-		<p style="display:inline-block; margin:0;">Refresh</p>
-		<input type="checkbox" id="refreshGame" onchange="gcSetRefreshGameTimer()" />
-        <p style="display:inline-block; margin:0; margin-left:5px">Priority</p>
-        <select id="direct" style="width:108px" onchange="delAutoTasks();tmReset();">
-            <option value="experience">xp</option>
-            <option value="money">$$$</option>
-        </select>
+        <div style="margin: 10px auto;">
+            <input type="checkbox" id="autoTask" onchange="delAutoTasks();tmReset();tmStartWork();"><span style="padding:5px;font-size: 20px; color: rgb(133, 0, 120);">Auto jobs</span></input></input>
+        </div>
+        <div>
+            <p style="display:inline-block; margin:0;">Refresh</p>
+            <input type="checkbox" id="refreshGame" onchange="gcSetRefreshGameTimer()" />
+            <p style="display:inline-block; margin:0; margin-left:5px">Priority</p>
+            <select id="direct" style="width:108px" onchange="delAutoTasks();tmReset();">
+                <option value="experience">xp</option>
+                <option value="money">$$$</option>
+            </select>
+        </div>
     </div>
-
-    <div>
-        <table id="tasksList" style="width:300px;margin: 10px auto;border-collapse: collapse;border: 1px solid black;table-layout:fixed;">
+	<div>
+        <table id="tasksList" style="width:300px;margin: 0 auto;border-collapse: collapse;border: 1px solid black;table-layout:fixed;">
             <tr style="background: rgb(255, 246, 228);border: 1px solid black;">
                 <td style="width: 60%; text-align: center; font-weight: bold; border: solid 1px; padding: 10px; margin: 10px;">Job name</td>
                 <td colspan="2" style="width: 40%; text-align: center; font-weight: bold; border-left: solid 1px; padding: 10px; margin: 10px;">Motivation</td>
@@ -28,13 +27,14 @@
                 <td style="padding:5px;border-left: 1px solid black;">
                     <input style="width:75%" id="motivation" value="50"></input>
                 </td>
-				<td style="margin:5px;text-align:center;">
-					<button style="margin: 5px; padding: 0px 5px;" onclick="addTaskButton();">Add</button>
-			</td>
+                <td style="margin:5px;text-align:center;">
+                    <button style="margin: 5px; padding: 0px 5px;" onclick="addTaskButton();">Add</button>
+                </td>
             </tr>
         </table>
         <div style="margin-top: 10px;">
-            <button style="padding: 5px 15px;" onclick="tmStartWork();">Start</button>
+			<button style="padding: 10px; background-color: rgb(50, 164, 118); color: white; width: 60px; padding: 5px 5px; border: 1px solid black; border-radius: 5px;" onclick="delAutoTasks();tmReset();"><span style="text-align:center;">Start</span></button>
+			<button style="padding: 10px; background-color: rgb(164, 50, 50); color: white; width: 60px; padding: 5px 5px; border: 1px solid black; border-radius: 5px;" onclick="delAutoTasks();tmReset();"><span style="text-align:center;">Reset</span></button>
         </div>
     </div>
 </div>
