@@ -195,7 +195,7 @@ function addAutoTasks(a) {
 		tasks = [];
 		for (var b = 0; b < gameWin.JobsModel.Jobs.length; b++) {
 			var job = gameWin.JobsModel.Jobs[b];
-			var myCondition = (job.jobpoints / job.workpoints) > 1.3;
+			var myCondition = (job.jobpoints / job.workpoints) > 1.25;
 			if (job.jobObj.level && myCondition) {
 				var d = 50;
 				addTask(job.name, job.id, d, true);
