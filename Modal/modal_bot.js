@@ -94,7 +94,7 @@ function gcFillJobDropdown() {
 	gameWin.Ajax.remoteCallMode("work", "index", {}, function(c) {
 
     gameWin.JobsModel.initJobs(c.jobs);
-    gameWin.JobsModel.sortJobs("name", null, "asc");
+    gameWin.JobsModel.sortJobs("exp", null, "dsc");
         for (var a = 0; a < gameWin.JobsModel.Jobs.length; a++) {
             var job = gameWin.JobsModel.Jobs[a];
             var myCondition = (job.jobpoints / job.workpoints) >= 1;
@@ -195,7 +195,7 @@ function addAutoTasks(a) {
 		tasks = [];
 		for (var b = 0; b < gameWin.JobsModel.Jobs.length; b++) {
 			var job = gameWin.JobsModel.Jobs[b];
-			var myCondition = (job.jobpoints / job.workpoints) > 1.25;
+			var myCondition = (job.jobpoints / job.workpoints) > 1.15;
 			if (job.jobObj.level && myCondition) {
 				var d = 50;
 				addTask(job.name, job.id, d, true);
