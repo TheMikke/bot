@@ -94,7 +94,7 @@ function gcFillJobDropdown() {
 	gameWin.Ajax.remoteCallMode("work", "index", {}, function(c) {
 
     gameWin.JobsModel.initJobs(c.jobs);
-    gameWin.JobsModel.sortJobs("exp", null, "dsc");
+    gameWin.JobsModel.sortJobs("name", null, "asc");
         for (var a = 0; a < gameWin.JobsModel.Jobs.length; a++) {
             var job = gameWin.JobsModel.Jobs[a];
             var myCondition = (job.jobpoints / job.workpoints) >= 1;
