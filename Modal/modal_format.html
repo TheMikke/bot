@@ -3,15 +3,16 @@
         <button style="background-color: rgb(134, 56, 10); color: white;position:absolute;top:5px;right:5px; width: 20px; border: 1px solid black; border-radius: 5px;" onclick="delAutoTasks();tmReset();closeModal();">
             <span style="text-align:center;font-weight:bold;font-size:12px;">x</span>
           </button>
-        <div style="margin: 10px; color: rgb(58, 25, 6); font-family: Times, serif; font-size: 28px; font-weight: bold;">eXP helper</div>
+        <div style="margin: 10px; color: rgb(58, 25, 6); font-family: Times, serif; font-size: 28px; font-weight: bold;">eXpermnt</div>
         <div style="margin-top: 10px; padding-bottom: 10px; text-align: center;">
-            <div><span style="padding: 5px; font-size: 18px; color: rgb(58, 25, 6); font-family: Times, serif;">Enable Auto Tasks</span></div>
-            <div style="margin-top: 5px;"><button id="autoTaskButton" onclick="toggleAutoTasks();" style="margin-left: auto; margin-right: auto; background-color: #ddd; border: 1px solid #888; border-radius: 8px; width: 40px; height: 20px; font-size:12px;">OFF</button></div>  
+            <div><span style="padding: 5px; font-size: 18px; color: rgb(58, 25, 6); font-family: Times, serif;">Auto Tasks</span></div>
+            <div style="margin-top: 5px;"><button id="autoTaskButton" onclick="toggleAutoTasks();" style="margin-left: auto; margin-right: auto; background-color: #ddd; border: 1px solid #888; border-radius: 8px; width: 50px; height: 25px; font-size:14px;">OFF</button></div>  
         </div>
         <div style="padding-bottom: 5px">
             <span style="padding: 5px; font-size: 16px; color: rgb(58, 25, 6); font-family: Times, serif;">Danger</span>
-            <input style="width:45px; text-align: center;" id="customCondition" value="1.15""></input>
-            <span style="display: block; padding: 5px; font-size: 8px; color: rgb(58, 25, 6); font-family: Times, serif;">Jobpoints / Workpoints (default 1.15 for non-dangerous jobs)</span>
+            <input style="width:45px; text-align: center;" id="customCondition" value="1.20""></input>
+            <span style="display: block; padding: 5px; font-size: 10px; color: rgb(58, 25, 6); font-family: Times, serif;">Jobpoints / Workpoints ratio</span>
+            <span style="display: block; padding: 0px; font-size: 8px; color: rgb(58, 25, 6); font-family: Times, serif;">(default cca 1.20 for non-dangerous jobs)</span>
         </div>
     </div>
 </div>
@@ -27,7 +28,7 @@
           <select style="width:100%" id="job"></select>
         </td>
         <td style="padding:5px;border-left: 1px solid black;">
-          <input style="width:75%" id="motivation" value="50"></input>
+          <input style="width:75%" id="motivation" value="75"></input>
         </td>
         <td style="margin:5px;text-align:center;">
           <button style="background-color: rgb(58, 25, 6); color: white; width: 40px; padding: 2x 2px; border: 1px solid black; border-radius: 5px; margin: 5px;" onclick="addTaskButton();tmStartWork();">
