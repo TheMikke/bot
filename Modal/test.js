@@ -176,7 +176,7 @@ function tmStartWork() {
 						currentTask = tasks[0]
 					} else {
 						if (autoTasksEnabled) {
-							addAutoTasks(document.getElementById("experience").value)
+							addAutoTasks("experience");
 						} else {
 							clearInterval(timerChekingEmploy);
 							timerChekingEmploy = undefined
@@ -191,16 +191,18 @@ function tmStartWork() {
 var autoTasksEnabled = false;
 function toggleAutoTasks() {
     autoTasksEnabled = !autoTasksEnabled;
-    var indicator = document.getElementById('autoTaskIndicator');
+    var button = document.getElementById("autoTaskButton");
     if (autoTasksEnabled) {
-        indicator.style.marginLeft = '20px';
-        indicator.style.backgroundColor = '#3a1906';
+	button.style.backgroundColor = "#3a1906";
+	button.style.color = "#fff";    
+        button.textContent = "ON";
         delAutoTasks();
         tmReset();
         tmStartWork();
     } else {
-        indicator.style.marginLeft = '2px';
-        indicator.style.backgroundColor = '#fff';
+        button.style.backgroundColor = "#fff";
+	button.style.color = "#000";
+        button.textContent = "OFF";
         delAutoTasks();
         tmReset();
     }
