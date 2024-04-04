@@ -175,8 +175,8 @@ function tmStartWork() {
 					if (tasks.length > 0) {
 						currentTask = tasks[0]
 					} else {
-						if (document.getElementById("autoTask").checked) {
-							addAutoTasks(document.getElementById("direct").value)
+						if (autoTasksEnabled) {
+							addAutoTasks("experience");
 						} else {
 							clearInterval(timerChekingEmploy);
 							timerChekingEmploy = undefined
@@ -188,14 +188,35 @@ function tmStartWork() {
 	}
 }
 
+var autoTasksEnabled = false;
+function toggleAutoTasks() {
+    autoTasksEnabled = !autoTasksEnabled;
+    var button = document.getElementById("autoTaskButton");
+    if (autoTasksEnabled) {
+	button.style.backgroundColor = "#3a1906";
+	button.style.color = "#fff";    
+        button.textContent = "ON";
+        delAutoTasks();
+        tmReset();
+        tmStartWork();
+    } else {
+        button.style.backgroundColor = "#fff";
+	button.style.color = "#000";
+        button.textContent = "OFF";
+        delAutoTasks();
+        tmReset();
+    }
+}
+
 function addAutoTasks(a) {
+	var customCondition = parseFloat(document.getElementById("customCondition").value);
 	gameWin.Ajax.remoteCallMode("work", "index", {}, function(c) {
 		gameWin.JobsModel.initJobs(c.jobs);
 		gameWin.JobsModel.sortJobs(a, null, "desc");
 		tasks = [];
 		for (var b = 0; b < gameWin.JobsModel.Jobs.length; b++) {
 			var job = gameWin.JobsModel.Jobs[b];
-			var myCondition = (job.jobpoints / job.workpoints) > 1.15;
+			var myCondition = (job.jobpoints / job.workpoints) > customCondition;
 			if (job.jobObj.level && myCondition) {
 				var d = 75;
 				addTask(job.name, job.id, d, true);
