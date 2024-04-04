@@ -3,16 +3,15 @@
         <button style="background-color: rgb(134, 56, 10); color: white;position:absolute;top:5px;right:5px; width: 20px; border: 1px solid black; border-radius: 5px;" onclick="delAutoTasks();tmReset();closeModal();">
             <span style="text-align:center;font-weight:bold;font-size:12px;">x</span>
           </button>
-        <div style="margin: 10px; color: rgb(58, 25, 6); font-family: Times, serif; font-size: 28px; font-weight: bold;">TW Bot</div>
-        <div style="padding: 5px;">
-            <input type="checkbox" id="autoTask" onchange="delAutoTasks();tmReset();tmStartWork();" style="margin-right: 5px;"><label for="autoTask" style="font-size: 18px; color: rgb(58, 25, 6); font-family: Times, serif;">Enable Auto Tasks</label>
+        <div style="margin: 10px; color: rgb(58, 25, 6); font-family: Times, serif; font-size: 28px; font-weight: bold;">eXP helper</div>
+        <div style="margin-top: 10px; padding-bottom: 10px; text-align: center;">
+            <div><span style="padding: 5px; font-size: 18px; color: rgb(58, 25, 6); font-family: Times, serif;">Enable Auto Tasks</span></div>
+            <div style="margin-top: 5px;"><button id="autoTaskButton" onclick="toggleAutoTasks();" style="margin-left: auto; margin-right: auto; background-color: #ddd; border: 1px solid #888; border-radius: 8px; width: 40px; height: 20px; font-size:12px;">OFF</button></div>  
         </div>
-        <div style="margin-top: 5px;padding-bottom: 5px">
-            <span style="padding: 5px; font-size: 16px; color: rgb(58, 25, 6); font-family: Times, serif;">Priority:</span>
-            <select id="direct" style="width: 60px; font-family: Times, serif;" onchange="delAutoTasks();tmReset();">
-                <option value="experience" style="text-align: center;font-family: Times, serif;">Exp</option>
-                <option value="money" style="text-align: center;font-family: Times, serif;">$$$</option>
-            </select>
+        <div style="padding-bottom: 5px">
+            <span style="padding: 5px; font-size: 16px; color: rgb(58, 25, 6); font-family: Times, serif;">Danger</span>
+            <input style="width:45px; text-align: center;" id="customCondition" value="1.15""></input>
+            <span style="display: block; padding: 5px; font-size: 8px; color: rgb(58, 25, 6); font-family: Times, serif;">Jobpoints / Workpoints (default 1.15 for non-dangerous jobs)</span>
         </div>
     </div>
 </div>
@@ -38,4 +37,3 @@
       </tr>
     </table>
 </div>
-
