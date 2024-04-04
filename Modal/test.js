@@ -201,7 +201,8 @@ function toggleAutoTasks() {
     } else {
         indicator.style.marginLeft = '2px';
         indicator.style.backgroundColor = '#fff';
-        // For example, if you have to stop some process when it's disabled
+        delAutoTasks();
+        tmReset();
     }
 }
 
