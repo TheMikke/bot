@@ -111,31 +111,32 @@ function gcFillJobDropdown() {
 function gcStartJob(b, a) {
 	gameWin.Ajax.get("map", "get_minimap", {}, function(g) {
 		if (g.error) {
-			console.error("Dropping gcStartJob: " + g.msg);
-			return
+			return;
 		}
+
 		var d = g.job_groups[gameWin.JobList.getJobById(b).groupid];
 		var c = d[0][0];
 		var j = d[0][1];
-		var e = gameWin.Map.calcWayTime(gameWin.Character.getPosition(), {
-			x: c,
-			y: j
-		});
-		for (var f = 0; f < d.length; f++) {
-			var newTime = gameWin.Map.calcWayTime(gameWin.Character.getPosition(), {
-				x: d[f][0],
-				y: d[f][1]
-			});
-			if (newTime < e) {
-				c = d[f][0];
-				j = d[f][1];
-				e = newTime;
+
+		if (typeof gameWin.Map.calcWayTime === "function") {
+			var e = gameWin.Map.calcWayTime(gameWin.Character.getPosition(), { x: c, y: j });
+
+			for (var f = 0; f < d.length; f++) {
+				var currentPosition = { x: d[f][0], y: d[f][1] };
+				var newTime = gameWin.Map.calcWayTime(gameWin.Character.getPosition(), currentPosition);
+
+				if (newTime < e) {
+					c = d[f][0];
+					j = d[f][1];
+					e = newTime;
+				}
 			}
+
+			var taskArray = new gameWin.Array();
+			taskArray.push(new gameWin.TaskJob(b, c, j, a));
+			gameWin.TaskQueue.add(taskArray);
 		}
-		var h = new gameWin.Array();
-		h.push(new gameWin.TaskJob(b, c, j, a));
-		gameWin.TaskQueue.add(h)
-	}, null)
+	}, null);
 }
 
 function gcCancelAllJobs() {
