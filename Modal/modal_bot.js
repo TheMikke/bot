@@ -117,18 +117,18 @@ function gcStartJob(b, a) {
 		var d = g.job_groups[gameWin.JobList.getJobById(b).groupid];
 		var c = d[0][0];
 		var j = d[0][1];
-		var e = gameWin.Map.calcWayTime(gameWin.Character.getPosition(), {
+		var e = gameWin.Map.calcWayTime_twx(gameWin.Character.getPosition(), {
 			x: c,
 			y: j
 		});
 		for (var f = 0; f < d.length; f++) {
-			if (gameWin.Map.calcWayTime(gameWin.Character.getPosition(), {
+			if (gameWin.Map.calcWayTime_twx(gameWin.Character.getPosition(), {
 					x: d[f][0],
 					y: d[f][1]
 				}) < e) {
 				c = d[f][0];
 				j = d[f][1];
-				e = gameWin.Map.calcWayTime(gameWin.Character.getPosition(), {
+				e = gameWin.Map.calcWayTime_twx(gameWin.Character.getPosition(), {
 					x: c,
 					y: j
 				})
