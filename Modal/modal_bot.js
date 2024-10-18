@@ -109,35 +109,33 @@ function gcFillJobDropdown() {
 }
 
 function gcStartJob(b, a) {
-	gameWin.Ajax.get("map", "get_minimap", {}, function(g) {
-		if (g.error) {
-			console.error("Dropping gcStartJob: " + g.msg);
-			return
-		}
-		var d = g.job_groups[gameWin.JobList.getJobById(b).groupid];
-		var c = d[0][0];
-		var j = d[0][1];
-		var e = gameWin.Map.calcWayTime(gameWin.Character.getPosition(), {
-			x: c,
-			y: j
-		});
-		for (var f = 0; f < d.length; f++) {
-			if (gameWin.Map.calcWayTime(gameWin.Character.getPosition(), {
-					x: d[f][0],
-					y: d[f][1]
-				}) < e) {
-				c = d[f][0];
-				j = d[f][1];
-				e = gameWin.Map.calcWayTime(gameWin.Character.getPosition(), {
-					x: c,
-					y: j
-				})
-			}
-		}
-		var h = new gameWin.Array();
-		h.push(new gameWin.TaskJob(b, c, j, a));
-		gameWin.TaskQueue.add(h)
-	}, null)
+    gameWin.Ajax.get("map", "get_minimap", {}, function(g) {
+        if (g.error) {
+            console.error("Dropping gcStartJob: " + g.msg);
+            return;
+        }
+
+        var jobGroup = g.job_groups[gameWin.JobList.getJobById(b).groupid];
+        if (!jobGroup || jobGroup.length === 0) return;
+
+        var start = gameWin.Character.getPosition();
+        var target = jobGroup[0];
+        var minTime = Math.sqrt((start.x - target[0]) ** 2 + (start.y - target[1]) ** 2) * Game.travelSpeed * Character.speed;
+
+        for (var i = 1; i < jobGroup.length; i++) {
+            var current = jobGroup[i];
+            var time = Math.sqrt((start.x - current[0]) ** 2 + (start.y - current[1]) ** 2) * Game.travelSpeed * Character.speed;
+
+            if (time < minTime) {
+                target = current;
+                minTime = time;
+            }
+        }
+
+        var taskArray = new gameWin.Array();
+        taskArray.push(new gameWin.TaskJob(b, target[0], target[1], a));
+        gameWin.TaskQueue.add(taskArray);
+    }, null);
 }
 
 function gcCancelAllJobs() {
