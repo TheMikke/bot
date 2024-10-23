@@ -42,22 +42,6 @@ function addTask(g, f, i, b) {
 	d.style.paddingLeft = "5px";
 	d.style.textAlign = "center";
 	d.style.borderLeft = "1px solid black";
-	var upBtn = document.createElement("button");
-	upBtn.innerText = "⬆";
-	upBtn.style.cursor = "pointer";
-	upBtn.addEventListener("click", function() {
-		moveRowUp(h);
-	});
-	var downBtn = document.createElement("button");
-	downBtn.innerText = "⬇";
-	downBtn.style.cursor = "pointer";
-	downBtn.addEventListener("click", function() {
-		moveRowDown(h);
-	});
-	var moveBtns = document.createElement("td");
-	moveBtns.style.textAlign = "center";
-	moveBtns.appendChild(upBtn);
-	moveBtns.appendChild(downBtn);
 	var c = document.createElement("td");
 	c.style.paddingLeft = "5px";
 	c.style.textAlign = "center";
@@ -71,7 +55,6 @@ function addTask(g, f, i, b) {
 	c.appendChild(a);
 	h.appendChild(e);
 	h.appendChild(d);
-	h.appendChild(moveBtns);
 	h.appendChild(c);
 	document.getElementById("tasksList").children[0].insertBefore(h, document.getElementById("elementsForAdding"));
 	a.addEventListener("click", Function("delTask(" + currentTaskId + "); tmReset();"))
@@ -84,20 +67,6 @@ function delTask(b) {
 			tasks.splice(a, 1);
 			break
 		}
-	}
-}
-
-function moveRowUp(row) {
-	var prevRow = row.previousElementSibling;
-	if (prevRow && prevRow.id !== "elementsForAdding") {
-		row.parentNode.insertBefore(row, prevRow);
-	}
-}
-
-function moveRowDown(row) {
-	var nextRow = row.nextElementSibling;
-	if (nextRow) {
-		row.parentNode.insertBefore(nextRow, row);
 	}
 }
 
