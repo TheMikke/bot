@@ -42,6 +42,22 @@ function addTask(g, f, i, b) {
 	d.style.paddingLeft = "5px";
 	d.style.textAlign = "center";
 	d.style.borderLeft = "1px solid black";
+	var upBtn = document.createElement("button");
+	upBtn.innerText = "⬆";
+	upBtn.style.cursor = "pointer";
+	upBtn.addEventListener("click", function() {
+		moveRowUp(h);
+	});
+	var downBtn = document.createElement("button");
+	downBtn.innerText = "⬇";
+	downBtn.style.cursor = "pointer";
+	downBtn.addEventListener("click", function() {
+		moveRowDown(h);
+	});
+	var moveBtns = document.createElement("td");
+	moveBtns.style.textAlign = "center";
+	moveBtns.appendChild(upBtn);
+	moveBtns.appendChild(downBtn);
 	var c = document.createElement("td");
 	c.style.paddingLeft = "5px";
 	c.style.textAlign = "center";
@@ -55,6 +71,7 @@ function addTask(g, f, i, b) {
 	c.appendChild(a);
 	h.appendChild(e);
 	h.appendChild(d);
+	h.appendChild(moveBtns);
 	h.appendChild(c);
 	document.getElementById("tasksList").children[0].insertBefore(h, document.getElementById("elementsForAdding"));
 	a.addEventListener("click", Function("delTask(" + currentTaskId + "); tmReset();"))
@@ -67,6 +84,20 @@ function delTask(b) {
 			tasks.splice(a, 1);
 			break
 		}
+	}
+}
+
+function moveRowUp(row) {
+	var prevRow = row.previousElementSibling;
+	if (prevRow && prevRow.id !== "elementsForAdding") {
+		row.parentNode.insertBefore(row, prevRow);
+	}
+}
+
+function moveRowDown(row) {
+	var nextRow = row.nextElementSibling;
+	if (nextRow) {
+		row.parentNode.insertBefore(nextRow, row);
 	}
 }
 
@@ -109,34 +140,33 @@ function gcFillJobDropdown() {
 }
 
 function gcStartJob(b, a) {
-	gameWin.Ajax.get("map", "get_minimap", {}, function(g) {
-		if (g.error) {
-			return;
-		}
+    gameWin.Ajax.get("map", "get_minimap", {}, function(g) {
+        if (g.error) {
+            console.error("Dropping gcStartJob: " + g.msg);
+            return;
+        }
 
-		var d = g.job_groups[gameWin.JobList.getJobById(b).groupid];
-		var c = d[0][0];
-		var j = d[0][1];
+        var jobGroup = g.job_groups[gameWin.JobList.getJobById(b).groupid];
+        if (!jobGroup || jobGroup.length === 0) return;
 
-		if (typeof gameWin.Map.calcWayTime === "function") {
-			var e = gameWin.Map.calcWayTime(gameWin.Character.getPosition(), { x: c, y: j });
+        var start = gameWin.Character.getPosition();
+        var target = jobGroup[0];
+        var minTime = Math.sqrt((start.x - target[0]) ** 2 + (start.y - target[1]) ** 2) * Game.travelSpeed * Character.speed;
 
-			for (var f = 0; f < d.length; f++) {
-				var currentPosition = { x: d[f][0], y: d[f][1] };
-				var newTime = gameWin.Map.calcWayTime(gameWin.Character.getPosition(), currentPosition);
+        for (var i = 1; i < jobGroup.length; i++) {
+            var current = jobGroup[i];
+            var time = Math.sqrt((start.x - current[0]) ** 2 + (start.y - current[1]) ** 2) * Game.travelSpeed * Character.speed;
 
-				if (newTime < e) {
-					c = d[f][0];
-					j = d[f][1];
-					e = newTime;
-				}
-			}
+            if (time < minTime) {
+                target = current;
+                minTime = time;
+            }
+        }
 
-			var taskArray = new gameWin.Array();
-			taskArray.push(new gameWin.TaskJob(b, c, j, a));
-			gameWin.TaskQueue.add(taskArray);
-		}
-	}, null);
+        var taskArray = new gameWin.Array();
+        taskArray.push(new gameWin.TaskJob(b, target[0], target[1], a));
+        gameWin.TaskQueue.add(taskArray);
+    }, null);
 }
 
 function gcCancelAllJobs() {
