@@ -18,76 +18,74 @@ function addTaskButton() {
 }
 
 function addTask(g, f, i, b) {
-	currentTaskId++;
-	var h = document.createElement("tr");
-	tasks.push({
-		jobId: f,
-		motivation: i,
-		taskId: currentTaskId,
-		row: h,
-		isAutoTask: b
-	});
-	h.onmouseover = function() {
-		this.style.background = "rgb(255, 246, 228)";
-	};
-	h.onmouseout = function() {
-		this.style.background = "rgb(255, 255, 255)";
-	};
+    currentTaskId++;
+    var h = document.createElement("tr");
+    h.setAttribute("data-task-id", currentTaskId);
+    
+    tasks.push({
+        jobId: f,
+        motivation: i,
+        taskId: currentTaskId,
+        row: h,
+        isAutoTask: b
+    });
+    h.onmouseover = function() {
+        this.style.background = "rgb(255, 246, 228)";
+    };
+    h.onmouseout = function() {
+        this.style.background = "rgb(255, 255, 255)";
+    };
 
-	var e = document.createElement("td");
-	e.innerText = g;
-	e.style.textAlign = "left";
-	e.style.paddingLeft = "5px";
+    var e = document.createElement("td");
+    e.innerText = g;
+    e.style.textAlign = "left";
+    e.style.paddingLeft = "5px";
 
-	var d = document.createElement("td");
-	d.innerText = i;
-	d.style.paddingLeft = "5px";
-	d.style.textAlign = "center";
-	d.style.borderLeft = "1px solid black";
-	var upBtn = document.createElement("button");
-	upBtn.innerText = "⬆";
-	upBtn.style.cursor = "pointer";
-	upBtn.addEventListener("click", function() {
-		moveRowUp(h);
-		handleTaskChange();
-	});
-	var downBtn = document.createElement("button");
-	downBtn.innerText = "⬇";
-	downBtn.style.cursor = "pointer";
-	downBtn.addEventListener("click", function() {
-		moveRowDown(h);
-		handleTaskChange();
-	});
-	var moveBtns = document.createElement("td");
-	moveBtns.style.textAlign = "center";
-	moveBtns.appendChild(upBtn);
-	moveBtns.appendChild(downBtn);
-	var c = document.createElement("td");
-	c.style.paddingLeft = "5px";
-	c.style.textAlign = "center";
-	var a = document.createElement("p");
-	a.innerText = "X";
-	a.style.cursor = "pointer";
-	a.style.margin = "0px";
-	a.style.display = "inline";
-	a.style.color = "red";
-	a.style.fontWeight = "bold";
-	c.appendChild(a);
-	h.appendChild(e);
-	h.appendChild(d);
-	h.appendChild(moveBtns);
-	h.appendChild(c);
-	document.getElementById("tasksList").children[0].insertBefore(h, document.getElementById("elementsForAdding"));
-	a.addEventListener("click", Function("delTask(" + currentTaskId + "); tmReset();"));
+    var d = document.createElement("td");
+    d.innerText = i;
+    d.style.paddingLeft = "5px";
+    d.style.textAlign = "center";
+    d.style.borderLeft = "1px solid black";
+
+    var c = document.createElement("td");
+    c.style.paddingLeft = "5px";
+    c.style.textAlign = "center";
+    var deleteButton = document.createElement("p");
+    deleteButton.innerText = "X";
+    deleteButton.style.cursor = "pointer";
+    deleteButton.style.margin = "0px";
+    deleteButton.style.display = "inline";
+    deleteButton.style.color = "red";
+    deleteButton.style.fontWeight = "bold";
+    deleteButton.addEventListener("click", Function("delTask(" + currentTaskId + "); tmReset();"));
+    c.appendChild(deleteButton);
+    var moveButton = document.createElement("button");
+    moveButton.innerText = "⇅";
+    moveButton.style.backgroundColor = "rgb(134, 56, 10)";
+    moveButton.style.color = "white";
+    moveButton.style.border = "1px solid black";
+    moveButton.style.borderRadius = "5px";
+    moveButton.style.padding = "2px";
+    moveButton.style.cursor = "pointer";
+    moveButton.addEventListener("click", function() {
+        moveSelectedRow(h);
+    });
+    c.appendChild(moveButton);
+
+    h.appendChild(e);
+    h.appendChild(d);
+    h.appendChild(c);
+    document.getElementById("tasksList").children[0].insertBefore(h, document.getElementById("elementsForAdding"));
 }
-function handleTaskChange() {
-	gcCancelAllJobs();
-	if (tasks.length > 0) {
-		var firstTask = tasks[0];
-		gcStartJob(firstTask.jobId, firstTask.isAutoTask);
-	}
+function moveSelectedRow(row) {
+    var prevRow = row.previousElementSibling;
+    var nextRow = row.nextElementSibling;
+    if (prevRow && !prevRow.hasAttribute("id")) {
+        row.parentNode.insertBefore(row, prevRow);
+    } else if (nextRow && !nextRow.hasAttribute("id")) {
+        row.parentNode.insertBefore(nextRow, row);
+    }
 }
-
 function delTask(b) {
 	for (var a = 0; a < tasks.length; a++) {
 		if (tasks[a].taskId == b) {
