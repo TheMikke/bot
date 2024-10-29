@@ -28,20 +28,40 @@ function addTask(g, f, i, b) {
 		isAutoTask: b
 	});
 	h.onmouseover = function() {
-		this.style.background = "rgb(255, 246, 228)"
+		this.style.background = "rgb(255, 246, 228)";
 	};
 	h.onmouseout = function() {
-		this.style.background = "rgb(255, 255, 255)"
+		this.style.background = "rgb(255, 255, 255)";
 	};
+
 	var e = document.createElement("td");
 	e.innerText = g;
 	e.style.textAlign = "left";
 	e.style.paddingLeft = "5px";
+
 	var d = document.createElement("td");
 	d.innerText = i;
 	d.style.paddingLeft = "5px";
 	d.style.textAlign = "center";
 	d.style.borderLeft = "1px solid black";
+	var upBtn = document.createElement("button");
+	upBtn.innerText = "⬆";
+	upBtn.style.cursor = "pointer";
+	upBtn.addEventListener("click", function() {
+		moveRowUp(h);
+		handleTaskChange();
+	});
+	var downBtn = document.createElement("button");
+	downBtn.innerText = "⬇";
+	downBtn.style.cursor = "pointer";
+	downBtn.addEventListener("click", function() {
+		moveRowDown(h);
+		handleTaskChange();
+	});
+	var moveBtns = document.createElement("td");
+	moveBtns.style.textAlign = "center";
+	moveBtns.appendChild(upBtn);
+	moveBtns.appendChild(downBtn);
 	var c = document.createElement("td");
 	c.style.paddingLeft = "5px";
 	c.style.textAlign = "center";
@@ -55,9 +75,17 @@ function addTask(g, f, i, b) {
 	c.appendChild(a);
 	h.appendChild(e);
 	h.appendChild(d);
+	h.appendChild(moveBtns);
 	h.appendChild(c);
 	document.getElementById("tasksList").children[0].insertBefore(h, document.getElementById("elementsForAdding"));
-	a.addEventListener("click", Function("delTask(" + currentTaskId + "); tmReset();"))
+	a.addEventListener("click", Function("delTask(" + currentTaskId + "); tmReset();"));
+}
+function handleTaskChange() {
+	gcCancelAllJobs();
+	if (tasks.length > 0) {
+		var firstTask = tasks[0];
+		gcStartJob(firstTask.jobId, firstTask.isAutoTask);
+	}
 }
 
 function delTask(b) {
