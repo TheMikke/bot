@@ -1,0 +1,108 @@
+javascript: var botPanel = document.createElement('div');
+botPanel.id = 'botPanel';
+botPanel.style.position = 'fixed';
+botPanel.style.zIndex = '999';
+botPanel.style.left = '10px';
+botPanel.style.top = '10px';
+botPanel.style.width = '325px';
+botPanel.style.minHeight = '245px';
+botPanel.style.height = 'auto'; 
+botPanel.style.backgroundColor = 'rgb(255, 246, 228)';
+botPanel.style.border = '1px solid black';
+botPanel.style.borderRadius = '10px';
+
+document.body.appendChild(botPanel);
+
+var isDragging = false;
+var offsetX, offsetY;
+botPanel.addEventListener('mousedown', startDragging);
+botPanel.addEventListener('mousemove', drag);
+botPanel.addEventListener('mouseup', stopDragging);
+botPanel.addEventListener('touchstart', startTouchDragging);
+botPanel.addEventListener('touchmove', touchDrag);
+botPanel.addEventListener('touchend', stopTouchDragging);
+
+var closeButton = document.createElement('button');
+closeButton.textContent = 'x';
+closeButton.style.position = 'absolute';
+closeButton.style.top = '5px';
+closeButton.style.right = '5px';
+closeButton.style.fontSize = '18px';
+closeButton.style.background = 'none';
+closeButton.style.border = 'none';
+closeButton.style.color = 'red';
+closeButton.onclick = closeModal;
+botPanel.appendChild(closeButton);
+
+function startDragging(e) {
+    isDragging = true;
+    offsetX = e.clientX - botPanel.getBoundingClientRect().left;
+    offsetY = e.clientY - botPanel.getBoundingClientRect().top;
+}
+function drag(e) {
+    if (isDragging) {
+        botPanel.style.left = (e.clientX - offsetX) + 'px';
+        botPanel.style.top = (e.clientY - offsetY) + 'px';
+    }
+}
+function stopDragging() {
+    isDragging = false;
+}
+function startTouchDragging(e) {
+    isDragging = true;
+    offsetX = e.touches[0].clientX - botPanel.getBoundingClientRect().left;
+    offsetY = e.touches[0].clientY - botPanel.getBoundingClientRect().top;
+}
+function touchDrag(e) {
+    if (isDragging) {
+        e.preventDefault();
+        botPanel.style.left = (e.touches[0].clientX - offsetX) + 'px';
+        botPanel.style.top = (e.touches[0].clientY - offsetY) + 'px';
+    }
+}
+function stopTouchDragging() {
+    isDragging = false;
+}
+
+function closeModal() {
+    var modal = document.getElementById('botPanel');
+    if (modal) {
+        modal.parentNode.removeChild(modal);
+    }
+}
+
+botPanel.innerHTML = '<div style="text-align: center; padding: 10px;"><div style="width: 280px; margin: 0 auto; background-color: rgb(255, 246, 228); padding: 5px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);"><button style="background-color: rgb(134, 56, 10); color: white;position:absolute;top:5px;right:5px; width: 20px; border: 1px solid black; border-radius: 5px;"onclick="delAutoTasks();tmReset();closeModal();"><span style="text-align:center;font-weight:bold;font-size:12px;">x</span></button><div style="margin: 10px; color: rgb(58, 25, 6); font-family: Times, serif; font-size: 28px; font-weight: bold;">eXpermnt</div><div style="margin-top: 10px; padding-bottom: 10px; text-align: center;"><div><span style="padding: 5px; font-size: 18px; color: rgb(58, 25, 6); font-family: Times, serif;">Auto Tasks</span></div><div style="margin-top: 5px;"><button id="autoTaskButton"onclick="toggleAutoTasks();"style="margin-left: auto; margin-right: auto; background-color: #ddd; border: 1px solid #888; border-radius: 8px; width: 50px; height: 25px; font-size:14px;">OFF</button></div></div><div style="padding-bottom: 5px"><span style="padding: 5px; font-size: 16px; color: rgb(58, 25, 6); font-family: Times, serif;">Danger</span><input style="width:45px; text-align: center;"id="customCondition"value="1.20""></input>
+            <span style="display:block;padding:5px;font-size:10px;color:rgb(58,25,6);font-family:Times,serif;">Jobpoints / Workpoints ratio</span>
+            <span style="display:block;padding:0px;font-size:8px;color:rgb(58,25,6);font-family:Times,serif;">(default cca 1.20 for non-dangerous jobs)</span>
+        </div>
+    </div>
+</div>
+
+<div style="padding:10px;">
+    <table id="tasksList" style="width:360px;border:1px solid black;margin:0 auto;border-collapse:collapse;table-layout:fixed;">
+        <tr style="background:rgb(255,246,228);border-bottom:solid 1px;">
+            <td style="width:220px;text-align:center;font-weight:bold;">Job name</td>
+            <td colspan="2" style="text-align:center;font-weight:bold;border-left:solid 1px;padding:10px;">Motivation</td>
+            <td style="text-align:center;font-weight:bold;border-left:solid 1px;padding:10px;">Exp</td>
+        </tr>
+        <tr id="elementsForAdding" style="background:rgb(255,246,228);">
+            <td style="padding:5px;">
+                <select style="width:100%" id="job"></select>
+            </td>
+            <td style="border-left:1px solid black;text-align:center;">
+                <input style="width:30px;height:20px;" id="motivation" value="75"></input>
+            </td>
+            <td style="text-align:left;">
+                <button style="background-color:rgb(58,25,6);color:white;width:40px;height:20px;border:1px solid black;border-radius:5px;" onclick="addTaskButton();tmStartWork();">
+                <span style="text-align:center;">Add</span>
+                </button>
+            </td>
+            <td style="text-align:center;border-left:1px solid black;">
+                <button onclick="moveSelectedRow('up')" style="background-color:rgb(134,56,10);padding:0px;color:white;width:16px;height:20px;border:1px solid black;border-radius:5px;">▲</button>
+                <button onclick="moveSelectedRow('down')" style="background-color:rgb(134,56,10);padding:0px;color:white;width:16px;height:20px;border:1px solid black;border-radius:5px;">▼</button></td></tr></table></div>';
+
+var script = document.createElement("script");
+
+script.innerText = 'var tasks=[];var currentTaskId=0;var audio;setTimeout(function(){gcFillJobDropdown();randomClick()},1000);function addTaskButton(){var c=document.getElementById("job").selectedOptions[0].text;var a=document.getElementById("job").value;var b=parseInt(document.getElementById("motivation").value);if(typeof b!="number"||b<-1||b>100){b=50}addTask(c,a,b,false)}function addTask(g,f,i,exp,b){currentTaskId++;var h=document.createElement("tr");h.setAttribute("data-task-id",currentTaskId);tasks.push({jobId:f,motivation:i,exp:exp,taskId:currentTaskId,row:h,isAutoTask:b});h.onmouseover=function(){this.style.background="rgb(255, 246, 228)"};h.onmouseout=function(){this.style.background="rgb(255, 255, 255)"};var e=document.createElement("td");e.innerText=g;e.style.textAlign="left";e.style.paddingLeft="5px";var d=document.createElement("td");d.innerText=i;d.style.paddingLeft="5px";d.style.textAlign="center";d.style.borderLeft="1px solid black";var expCell=document.createElement("td");expCell.innerText=exp;expCell.style.paddingLeft="5px";expCell.style.textAlign="center";expCell.style.borderLeft="1px solid black";var c=document.createElement("td");c.style.paddingLeft="5px";c.style.textAlign="center";var deleteButton=document.createElement("p");deleteButton.innerText="X";deleteButton.style.cursor="pointer";deleteButton.style.margin="0px";deleteButton.style.display="inline";deleteButton.style.color="red";deleteButton.style.fontWeight="bold";deleteButton.addEventListener("click",Function("delTask("+currentTaskId+"); tmReset();"));c.appendChild(deleteButton);h.appendChild(e);h.appendChild(d);h.appendChild(expCell);h.appendChild(c);document.getElementById("tasksList").children[0].insertBefore(h,document.getElementById("elementsForAdding"))}function moveSelectedRow(row){var prevRow=row.previousElementSibling;var nextRow=row.nextElementSibling;if(prevRow&&!prevRow.hasAttribute("id")){row.parentNode.insertBefore(row,prevRow)}else if(nextRow&&!nextRow.hasAttribute("id")){row.parentNode.insertBefore(nextRow,row)}}function delTask(b){for(var a=0;a<tasks.length;a++){if(tasks[a].taskId==b){tasks[a].row.remove();tasks.splice(a,1);break}}}function delAutoTasks(){var b=[];for(var a=0;a<tasks.length;a++){if(tasks[a].isAutoTask){b.push(tasks[a].taskId)}}for(var a=0;a<b.length;a++){delTask(b[a])}}var gameDoc=document;var gameWin=window;function randomClick(){console.log("randomClick");setTimeout(randomClick,parseInt(Math.random()*170+10)*1000);gameDoc.getElementsByClassName("menulink lcharacter")[0].click()}function gcFillJobDropdown(){gameWin.Ajax.remoteCallMode("work","index",{},function(c){gameWin.JobsModel.initJobs(c.jobs);gameWin.JobsModel.sortJobs("name",null,"asc");for(var a=0;a<gameWin.JobsModel.Jobs.length;a++){var job=gameWin.JobsModel.Jobs[a];var myCondition=(job.jobpoints/job.workpoints)>=1;if(job.jobObj.level&&myCondition){var b=document.createElement("option");b.value=job.id;b.innerText="${job.name} (Exp: ${job.exp})";b.setAttribute("data-exp",job.exp);document.getElementById("job").appendChild(b)}}},null)}function gcStartJob(b,a){gameWin.Ajax.get("map","get_minimap",{},function(g){if(g.error){console.error("Dropping gcStartJob: "+g.msg);return}var jobGroup=g.job_groups[gameWin.JobList.getJobById(b).groupid];if(!jobGroup||jobGroup.length===0)return;var start=gameWin.Character.getPosition();var target=jobGroup[0];var minTime=Math.sqrt((start.x-target[0])**2+(start.y-target[1])**2)*Game.travelSpeed*Character.speed;for(var i=1;i<jobGroup.length;i++){var current=jobGroup[i];var time=Math.sqrt((start.x-current[0])**2+(start.y-current[1])**2)*Game.travelSpeed*Character.speed;if(time<minTime){target=current;minTime=time}}var taskArray=new gameWin.Array();taskArray.push(new gameWin.TaskJob(b,target[0],target[1],a));gameWin.TaskQueue.add(taskArray)},null)}function gcCancelAllJobs(){var b=gameDoc.getElementsByClassName("taskAbort");for(var a=0;a<b.length;a++){b[a].click()}}var currentTask=undefined;var timerChekingEmploy=undefined;function tmReset(){currentTask=undefined}function tmStartWork(){if(timerChekingEmploy===undefined){timerChekingEmploy=setInterval(function(){console.log("check");if(gameWin.TaskQueue.queue.length<1){if(currentTask){if(gameWin.Character.energy>=2){gameWin.Ajax.remoteCallMode("work","index",{},function(b){gameWin.JobsModel.initJobs(b.jobs);if(gameWin.JobsModel.getById(currentTask.jobId).jobmotivation*100>currentTask.motivation||currentTask.motivation==-1){console.log("Start job "+gameWin.JobsModel.getById(currentTask.jobId).name+" "+new Date().getHours()+":"+new Date().getMinutes());gcStartJob(currentTask.jobId,tmGetWorkTime())}else{delTask(currentTask.taskId);tmReset()}},null)}}else{if(tasks.length>0){currentTask=tasks[0]}else{if(autoTasksEnabled){addAutoTasks("experience")}else{clearInterval(timerChekingEmploy);timerChekingEmploy=undefined}}}}},3000)}}var autoTasksEnabled=false;function toggleAutoTasks(){autoTasksEnabled=!autoTasksEnabled;var button=document.getElementById("autoTaskButton");if(autoTasksEnabled){button.style.backgroundColor="#3a1906";button.style.color="#fff";button.textContent="ON";delAutoTasks();tmReset();tmStartWork()}else{button.style.backgroundColor="#fff";button.style.color="#000";button.textContent="OFF";delAutoTasks();tmReset()}}function addAutoTasks(a){var customCondition=parseFloat(document.getElementById("customCondition").value);gameWin.Ajax.remoteCallMode("work","index",{},function(c){gameWin.JobsModel.initJobs(c.jobs);gameWin.JobsModel.sortJobs(a,null,"desc");tasks=[];for(var b=0;b<gameWin.JobsModel.Jobs.length;b++){var job=gameWin.JobsModel.Jobs[b];var myCondition=(job.jobpoints/job.workpoints)>customCondition;if(job.jobObj.level&&myCondition){var d=75;addTask(job.name,job.id,d,true);break}}},null)}function tmGetWorkTime(){if(gameWin.Character.energy>=2){return 15}return 0};';
+
+document.head.appendChild(script);
