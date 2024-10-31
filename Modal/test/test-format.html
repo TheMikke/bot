@@ -1,0 +1,44 @@
+<div style="text-align: center; padding: 10px;">
+    <div style="width: 280px; margin: 0 auto; background-color: rgb(255, 246, 228); padding: 5px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);">
+        <button style="background-color: rgb(134, 56, 10); color: white;position:absolute;top:5px;right:5px; width: 20px; border: 1px solid black; border-radius: 5px;" onclick="delAutoTasks();tmReset();closeModal();">
+            <span style="text-align:center;font-weight:bold;font-size:12px;">x</span>
+          </button>
+        <div style="margin: 10px; color: rgb(58, 25, 6); font-family: Times, serif; font-size: 28px; font-weight: bold;">eXpermnt</div>
+        <div style="margin-top: 10px; padding-bottom: 10px; text-align: center;">
+            <div><span style="padding: 5px; font-size: 18px; color: rgb(58, 25, 6); font-family: Times, serif;">Auto Tasks</span></div>
+            <div style="margin-top: 5px;"><button id="autoTaskButton" onclick="toggleAutoTasks();" style="margin-left: auto; margin-right: auto; background-color: #ddd; border: 1px solid #888; border-radius: 8px; width: 50px; height: 25px; font-size:14px;">OFF</button></div>  
+        </div>
+        <div style="padding-bottom: 5px">
+            <span style="padding: 5px; font-size: 16px; color: rgb(58, 25, 6); font-family: Times, serif;">Danger</span>
+            <input style="width:45px; text-align: center;" id="customCondition" value="1.20""></input>
+            <span style="display: block; padding: 5px; font-size: 10px; color: rgb(58, 25, 6); font-family: Times, serif;">Jobpoints / Workpoints ratio</span>
+            <span style="display: block; padding: 0px; font-size: 8px; color: rgb(58, 25, 6); font-family: Times, serif;">(default cca 1.20 for non-dangerous jobs)</span>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 10px;">
+    <table id="tasksList" style="width:360px;border: 1px solid black; margin: 0 auto; border-collapse: collapse;  table-layout: fixed;">
+        <tr style="background: rgb(255, 246, 228);border-bottom: solid 1px;">
+            <td style="width: 220px; text-align: center; font-weight: bold;">Job name</td>
+            <td colspan="3" style="text-align: center; font-weight: bold; border-left: solid 1px; padding: 10px;">Motivation</td>
+        </tr>
+        <tr id="elementsForAdding" style="background: rgb(255, 246, 228);">
+            <td style="padding: 5px;">
+                <select style="width: 100%" id="job"></select>
+            </td>
+            <td style="border-left: 1px solid black; text-align: center;">
+                <input style="width: 30px; height: 20px;" id="motivation" value="75"></input>
+            </td>
+            <td style="text-align: left;">
+                <button style="background-color: rgb(58, 25, 6); color: white; width: 40px; height: 20px; border: 1px solid black; border-radius: 5px;" onclick="addTaskButton();tmStartWork();">
+                <span style="text-align: center;">Add</span>
+                </button>
+            </td>
+            <td style="text-align: center;border-left: 1px solid black;">
+                <button onclick="moveSelectedRow('up')" style="background-color: rgb(134, 56, 10); padding: 0px; color: white; width: 16px; height: 20px; border: 1px solid black; border-radius: 5px;">▲</button>
+                <button onclick="moveSelectedRow('down')" style="background-color: rgb(134, 56, 10); padding: 0px; color: white; width: 16px; height: 20px; border: 1px solid black; border-radius: 5px;">▼</button>
+            </td>
+        </tr>
+    </table>
+</div>
