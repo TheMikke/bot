@@ -17,31 +17,48 @@ function addTaskButton() {
 	addTask(c, a, b, false)
 }
 
-function addTask(g, f, i, exp, b) {
+function addTask(g, f, i, b) {
     currentTaskId++;
     var h = document.createElement("tr");
     h.setAttribute("data-task-id", currentTaskId);
 
+    h.onclick = function() {
+    const isSelected = h.classList.contains("selected");
+    document.querySelectorAll("tr").forEach(row => {
+        row.classList.remove("selected");
+        row.style.background = "rgb(255, 246, 228)";
+        row.onmouseover = function() {
+            this.style.background = "rgb(255, 240, 210)";
+        };
+        row.onmouseout = function() {
+            this.style.background = "rgb(255, 246, 228)";
+        };
+    });
+	if (!isSelected) {
+        h.classList.add("selected");
+        h.style.background = "rgb(255, 230, 200)";
+        h.onmouseover = null;
+        h.onmouseout = null;
+    }
+};
+    var experience;
+    var selectedJob = document.getElementById("job").options[document.getElementById("job").selectedIndex];
+    if (selectedJob) {
+        experience = selectedJob.getAttribute("data-exp");
+    }
     tasks.push({
         jobId: f,
         motivation: i,
-        exp: exp,
+        experience: experience,
         taskId: currentTaskId,
         row: h,
         isAutoTask: b
     });
-
-    h.onmouseover = function() {
-        this.style.background = "rgb(255, 246, 228)";
-    };
-    h.onmouseout = function() {
-        this.style.background = "rgb(255, 255, 255)";
-    };
-
     var e = document.createElement("td");
     e.innerText = g;
     e.style.textAlign = "left";
     e.style.paddingLeft = "5px";
+    
     var d = document.createElement("td");
     d.innerText = i;
     d.style.paddingLeft = "5px";
@@ -49,7 +66,7 @@ function addTask(g, f, i, exp, b) {
     d.style.borderLeft = "1px solid black";
 
     var expCell = document.createElement("td");
-    expCell.innerText = exp;  // Zobrazí počet zkušeností
+    expCell.innerText = experience;
     expCell.style.paddingLeft = "5px";
     expCell.style.textAlign = "center";
     expCell.style.borderLeft = "1px solid black";
@@ -75,14 +92,30 @@ function addTask(g, f, i, exp, b) {
     
     document.getElementById("tasksList").children[0].insertBefore(h, document.getElementById("elementsForAdding"));
 }
-
-function moveSelectedRow(row) {
-    var prevRow = row.previousElementSibling;
-    var nextRow = row.nextElementSibling;
-    if (prevRow && !prevRow.hasAttribute("id")) {
-        row.parentNode.insertBefore(row, prevRow);
-    } else if (nextRow && !nextRow.hasAttribute("id")) {
-        row.parentNode.insertBefore(nextRow, row);
+function updateTaskListOrder() {
+    const rows = Array.from(document.querySelectorAll("#tasksList tr[data-task-id]"));
+    tasks = rows.map(row => tasks.find(task => task.taskId === parseInt(row.getAttribute("data-task-id"))));
+    handleTaskChange();
+}
+function handleTaskChange() {
+    gcCancelAllJobs();
+    const firstTask = tasks[0];
+    if (firstTask) {
+        gcStartJob(firstTask.jobId, firstTask.motivation);
+    }
+}
+function moveUp() {
+    const selectedRow = document.querySelector("tr.selected");
+    if (selectedRow && selectedRow.previousElementSibling && selectedRow.previousElementSibling.hasAttribute("data-task-id")) {
+        selectedRow.parentNode.insertBefore(selectedRow, selectedRow.previousElementSibling);
+        updateTaskListOrder();
+    }
+}
+function moveDown() {
+    const selectedRow = document.querySelector("tr.selected");
+    if (selectedRow && selectedRow.nextElementSibling && selectedRow.nextElementSibling.hasAttribute("data-task-id")) {
+        selectedRow.parentNode.insertBefore(selectedRow.nextElementSibling, selectedRow);
+        updateTaskListOrder();
     }
 }
 function delTask(b) {
@@ -125,10 +158,16 @@ function gcFillJobDropdown() {
             var myCondition = (job.jobpoints / job.workpoints) >= 1;
             
             if (job.jobObj.level && myCondition) {
+		var experience;
+                if (JobsModel.basetype) {
+                    experience = job.basis[JobsModel.basetype].experience;
+                } else {
+                    experience = job.experience;
+                }
                 var b = document.createElement("option");
                 b.value = job.id;
-                b.innerText = "${job.name} (Exp: ${job.exp})";
-                b.setAttribute("data-exp", job.exp);
+                b.innerText = job.name + " (Exp: " + experience + ")";
+                b.setAttribute("data-exp", job.experience);
                 document.getElementById("job").appendChild(b);
             }
         }
