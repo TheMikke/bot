@@ -17,49 +17,74 @@ function addTaskButton() {
 	addTask(c, a, b, false)
 }
 
-function addTask(g, f, i, b) {
-	currentTaskId++;
-	var h = document.createElement("tr");
-	tasks.push({
-		jobId: f,
-		motivation: i,
-		taskId: currentTaskId,
-		row: h,
-		isAutoTask: b
-	});
-	h.onmouseover = function() {
-		this.style.background = "rgb(255, 246, 228)"
-	};
-	h.onmouseout = function() {
-		this.style.background = "rgb(255, 255, 255)"
-	};
-	var e = document.createElement("td");
-	e.innerText = g;
-	e.style.textAlign = "left";
-	e.style.paddingLeft = "5px";
-	var d = document.createElement("td");
-	d.innerText = i;
-	d.style.paddingLeft = "5px";
-	d.style.textAlign = "center";
-	d.style.borderLeft = "1px solid black";
-	var c = document.createElement("td");
-	c.style.paddingLeft = "5px";
-	c.style.textAlign = "center";
-	var a = document.createElement("p");
-	a.innerText = "X";
-	a.style.cursor = "pointer";
-	a.style.margin = "0px";
-	a.style.display = "inline";
-	a.style.color = "red";
-	a.style.fontWeight = "bold";
-	c.appendChild(a);
-	h.appendChild(e);
-	h.appendChild(d);
-	h.appendChild(c);
-	document.getElementById("tasksList").children[0].insertBefore(h, document.getElementById("elementsForAdding"));
-	a.addEventListener("click", Function("delTask(" + currentTaskId + "); tmReset();"))
+function addTask(g, f, i, exp, b) {
+    currentTaskId++;
+    var h = document.createElement("tr");
+    h.setAttribute("data-task-id", currentTaskId);
+
+    tasks.push({
+        jobId: f,
+        motivation: i,
+        exp: exp,
+        taskId: currentTaskId,
+        row: h,
+        isAutoTask: b
+    });
+
+    h.onmouseover = function() {
+        this.style.background = "rgb(255, 246, 228)";
+    };
+    h.onmouseout = function() {
+        this.style.background = "rgb(255, 255, 255)";
+    };
+
+    var e = document.createElement("td");
+    e.innerText = g;
+    e.style.textAlign = "left";
+    e.style.paddingLeft = "5px";
+    var d = document.createElement("td");
+    d.innerText = i;
+    d.style.paddingLeft = "5px";
+    d.style.textAlign = "center";
+    d.style.borderLeft = "1px solid black";
+
+    var expCell = document.createElement("td");
+    expCell.innerText = exp;  // Zobrazí počet zkušeností
+    expCell.style.paddingLeft = "5px";
+    expCell.style.textAlign = "center";
+    expCell.style.borderLeft = "1px solid black";
+
+    var c = document.createElement("td");
+    c.style.paddingLeft = "5px";
+    c.style.textAlign = "center";
+
+    var deleteButton = document.createElement("p");
+    deleteButton.innerText = "X";
+    deleteButton.style.cursor = "pointer";
+    deleteButton.style.margin = "0px";
+    deleteButton.style.display = "inline";
+    deleteButton.style.color = "red";
+    deleteButton.style.fontWeight = "bold";
+    deleteButton.addEventListener("click", Function("delTask(" + currentTaskId + "); tmReset();"));
+    c.appendChild(deleteButton);
+
+    h.appendChild(e);
+    h.appendChild(d);
+    h.appendChild(expCell);
+    h.appendChild(c);
+    
+    document.getElementById("tasksList").children[0].insertBefore(h, document.getElementById("elementsForAdding"));
 }
 
+function moveSelectedRow(row) {
+    var prevRow = row.previousElementSibling;
+    var nextRow = row.nextElementSibling;
+    if (prevRow && !prevRow.hasAttribute("id")) {
+        row.parentNode.insertBefore(row, prevRow);
+    } else if (nextRow && !nextRow.hasAttribute("id")) {
+        row.parentNode.insertBefore(nextRow, row);
+    }
+}
 function delTask(b) {
 	for (var a = 0; a < tasks.length; a++) {
 		if (tasks[a].taskId == b) {
@@ -91,17 +116,19 @@ function randomClick() {
 }
 
 function gcFillJobDropdown() {
-	gameWin.Ajax.remoteCallMode("work", "index", {}, function(c) {
-
-    gameWin.JobsModel.initJobs(c.jobs);
-    gameWin.JobsModel.sortJobs("name", null, "asc");
+    gameWin.Ajax.remoteCallMode("work", "index", {}, function(c) {
+        gameWin.JobsModel.initJobs(c.jobs);
+        gameWin.JobsModel.sortJobs("name", null, "asc");
+        
         for (var a = 0; a < gameWin.JobsModel.Jobs.length; a++) {
             var job = gameWin.JobsModel.Jobs[a];
             var myCondition = (job.jobpoints / job.workpoints) >= 1;
+            
             if (job.jobObj.level && myCondition) {
                 var b = document.createElement("option");
                 b.value = job.id;
-                b.innerText = job.name;
+                b.innerText = "${job.name} (Exp: ${job.exp})";
+                b.setAttribute("data-exp", job.exp);
                 document.getElementById("job").appendChild(b);
             }
         }
