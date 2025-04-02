@@ -1,6 +1,15 @@
-// Variables used by Scriptable.
-// These must be at the very top of the file. Do not edit.
-// icon-color: deep-brown; icon-glyph: magic;
+// ==UserScript==
+// @name            Vajda Jožo
+// @namespace       http://tampermonkey.net/
+// @version         1.0.0
+// @description     A user script for The West, optimized Dobby2 for butt plugs and cake decorations.
+// @author          Chvostnatý Gábor
+// @include         https://sk*.the-west.*/game.php*
+// @include         https://cz*.the-west.*/game.php*
+// @exclude         https://*.events.the-west.*
+// @icon            data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAACcAAAAnCAMAAAC7faEHAAAAPFBMVEVrkJ96n66DiINcgIyrWj3mhGSGRzL4nX9zeXWQl5H+up7Mbk0VCgxdaWuiq6Q6JSOBYlZGSkxfNy2ufGj5kWvyAAACxElEQVR4nFWUCZLsKAxE2RHG7Pe/62QKV/8Ywu6y4ZGSUqaNsdYYXvjl7Y3n5T3n+dCaN2YAwYy1mPhwgwV/9ynHYRaewNtLcL2Z/wHU+biL6bBtjLGK+cSVVGDp6p3D0xp7vy8TMtxtNWF79TT3O9lGzDnX0T5Ew3iuK0dh1VszP8+T07JXztivnF9+npusGcrFQMFLaOAb92amaY6JuDGkAQ/sTeXzYZjrSdepiSIwhlhy326Nvn6t0HQduIP7Qtf8f/m5XlpzpNtMNYaQjDpQrPl5Db3umrjmei+9m1ZrmvVcg68vdJpx8eMKdjhni5sH/sW9y5/Nt4laLwtC68WhWDgTxxtzPPIDi78cUnNi/IFUfM5AuSfTnlMKAn1VLiOCd+cPHM41P3GM88TIthzMO3H++tL5ViYQqET2gwx3hdIFQy1fBmriutSoQxFAEXuC9FIKQJCIW2wpftZ6yXxJPobJWmEYhJZhVPEzfBxAWhMjnRTBIsHOOhw2pPTD/sCQUmuskSy4xocQQr1iLEgx9M91lRNyBdr9YDMCM7MalaspheCMB8OWan7NnRrGBZHXlRvgJqKJg8GXE0G544VkCDEjgVrDfvE2oQZI83PwyMEVnLSNWICQw95jg2PrHG/lUDe/dWFGUMIFMjm8sXNcVl9gy4mMEQgGvSEt0K5N5YAwPxGm7iaWg7JpD2w7MIrfAdZFfRYJ+akTOpti5GrdgrMXYaCwH0X7IaxywpuLAcTjAlextmCgY38FEeGXrKreJpWtYS0cqYWvBcdM2iB3IDHlDVELQVg0e60FeKPBrfUuA/X2A6XSXnSANbKFeb9r0Wgc2NmQ4jBIUmLdbvIfwYYWx3iHctIWxCBKzrkanNT53jH0715rIz8ebjjDegviBtzPfv+NiTp2ZR3Emn7PkmJtsCb/gTvn1MClhZjS5mrjP4VqJ9/Eb24oAAAAAElFTkSuQmCC
+// @grant           none
+// ==/UserScript==
 
 window.sleep = async function(milliseconds) {
     await new Promise(r => setTimeout(r, milliseconds))
